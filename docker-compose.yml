@@ -6,10 +6,13 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: always
+    env_file:
+      - stack.env 
     networks:
       - www_proxy
     volumes:
       - database:/app/data
+
   
 networks:
   www_proxy:
