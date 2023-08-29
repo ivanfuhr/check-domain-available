@@ -101,7 +101,7 @@ const combinations = sizes.reduce((acc, size) => {
     return [...acc, ...generateVariations(process.env.ALPHABET, Number(size))];
 }, []);
 
-app.use("/database", express.static(__dirname + '/data'));
+app.use("/", express.static(__dirname + '/data'));
 app.listen(process.env.SERVER_PORT, () => console.log(`Server listening on port ${process.env.SERVER_PORT}`));
 
 const batchSize = Number(process.env.BATCH_SIZE);
