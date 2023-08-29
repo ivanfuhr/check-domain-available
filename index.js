@@ -1,5 +1,6 @@
 import { config } from 'dotenv';
 import express from 'express';
+import fs from 'fs';
 import pQueue from 'p-queue';
 import path from 'path';
 import sqlite3 from 'sqlite3';
@@ -11,6 +12,11 @@ const app = express();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const dir = './data';
+if (!fs.existsSync(dir)){
+    fs.mkdirSync(dir);
+}
 
 const queue = new pQueue({ concurrency: Number(process.env.NUM_WORKERS) });
 const db = new sqlite3.Database('data/domains.db');
@@ -36,7 +42,7 @@ function performWhoisLookup(combination) {
     });
   }
 
-function generateVariations(word, length) {
+function generateVariations(characters, length) {
     function backtrack(current) {
         if (current.length === length) {
             variations.push(current);
