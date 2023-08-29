@@ -35,7 +35,7 @@ function performWhoisLookup(combination) {
             if (err) {
                 resolve(false);
             } else {
-                const isAvailable = !data.includes('No match for');
+                const isAvailable = data.includes('No match for');
                 resolve(isAvailable);
             }
         });
