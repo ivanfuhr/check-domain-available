@@ -105,9 +105,16 @@ app.use("/", express.static(__dirname + '/data'));
 app.listen(process.env.SERVER_PORT, () => console.log(`Server listening on port ${process.env.SERVER_PORT}`));
 
 const batchSize = Number(process.env.BATCH_SIZE);
-for (let i = 0; i < combinations.length; i += batchSize) {
-    const batch = combinations.slice(i, i + batchSize);
-    batch.forEach((combination) => {
+if(batchSize) {
+    for (let i = 0; i < combinations.length; i += batchSize) {
+        const batch = combinations.slice(i, i + batchSize);
+        batch.forEach((combination) => {
+            queue.add(() => checkAndInsertOrUpdateDomain(combination));
+        });
+        await queue.onIdle();
+    }
+} else {
+    combinations.forEach((combination) => {
         queue.add(() => checkAndInsertOrUpdateDomain(combination));
     });
     await queue.onIdle();
